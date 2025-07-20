@@ -13,15 +13,12 @@ class Reservation {
         this.date = date;
         this.time = time;
     }
-
     public boolean sameSlot(Reservation r) {
         return table == r.table && date.equals(r.date) && time.equals(r.time);
     }
-
     public boolean sameCustomer(Reservation r) {
         return name.equalsIgnoreCase(r.name) && sameSlot(r);
     }
-
     public String toString() {
         return "ID: #" + id + "\n"
              + "Table: " + table + "\n"
@@ -29,10 +26,9 @@ class Reservation {
              + "Time: " + time;
     }
 }
-
 public class Booking {
     static Scanner sc = new Scanner(System.in);
-    static Reservation[] list = new Reservation[100];
+    static Reservation[] list = new Reservation[10];
     static int count = 0;
 
     static Set activeIDs = new Set(); 
@@ -123,7 +119,8 @@ public class Booking {
     System.out.print("Table: ");
     int table = Integer.parseInt(sc.nextLine());
 
-    boolean dup = false, dbl = false;
+    boolean dup = false; 
+    boolean dbl = false;
     boolean found = false;
 
     Reservation[] bookings = new Reservation[count];
