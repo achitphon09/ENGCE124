@@ -1,0 +1,131 @@
+package com.mycompany.test;
+
+public class Test {
+
+    public static void main(String[] args) {
+        int n[][][][] = {
+            {{{5, 3, 4}, {6, 7, 2}, {1, 9, 8}},
+            {{6, 7, 8}, {1, 9, 5}, {3, 4, 2}},
+            {{9, 1, 2}, {3, 4, 8}, {5, 6, 7}}},
+            
+            {{{8, 5, 9}, {4, 2, 6}, {7, 1, 3}},
+            {{7, 6, 1}, {8, 5, 3}, {9, 2, 4}},
+            {{4, 2, 3}, {7, 9, 1}, {8, 5, 6}}},
+            
+            {{{9, 6, 2}, {2, 8, 7}, {3, 4, 5}},
+            {{5, 3, 7}, {4, 1, 9}, {2, 8, 6}},
+            {{2, 8, 4}, {6, 3, 5}, {1, 7, 9}}},};
+
+        
+        
+        for (int r = 0; r < 3; r++) {
+            printRow(n, r);
+        }
+
+        System.out.println();
+
+        checkrow(n);
+
+        System.out.println();
+        
+
+        for (int c = 0; c < 3; c++) {
+            printcol(n, c);
+        }
+
+        System.out.println();
+
+        checkcol(n);
+    
+                System.out.println();
+        
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                separateBlock(n,i,j);
+            }
+            }
+        }
+
+    
+
+    static void separateBlock(int n[][][][], int r_block, int c_block) {
+        String st = "";
+        for (int i = 0; i < n[r_block][c_block].length; i++) {
+            for (int j = 0; j < n[r_block][c_block][0].length; j++) {
+                System.out.print(n[r_block][c_block][i][j]);
+                st = st + n[r_block][c_block][i][j];
+            }
+            System.out.println();
+        }
+        if(!checksudoku(st))
+               System.out.println(r_block+","+c_block);
+        
+        System.out.println(checksudoku(st));
+    }
+
+    static boolean checksudoku(String st) {
+        String ch, sequence;
+        boolean win = true;
+        for (int i = 0; i < st.length(); i++) {
+            ch = st.substring(i, i + 1);
+            sequence = st.substring(i + 1);
+            if (sequence.contains(ch)) {
+                win = false;
+                break;
+            }
+        }
+        return win;
+    }
+
+    static void printRow(int n[][][][], int r) {
+        for (int rs = 0; rs < 3; rs++) {
+            for (int i = 0; i < n[r].length; i++) {
+                for (int j = 0; j < n[r][i].length; j++) {
+                    System.out.print(n[r][i][rs][j]);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    static void checkrow(int n[][][][]) {
+        for (int r = 0; r < 3; r++) {
+            for (int rs = 0; rs < 3; rs++) {
+                String st = "";
+                for (int i = 0; i < n[r].length; i++) {
+                    for (int j = 0; j < n[r][i].length; j++) {
+                        st += n[r][i][rs][j];
+                    }
+                }
+                System.out.println(st + " = " + checksudoku(st));
+            }
+        }
+    }
+
+    static void printcol(int n[][][][], int c) {
+        for (int cs = 0; cs < 3; cs++) {
+            for (int r = 0; r < 3; r++) {
+                for (int j = 0; j < 3; j++) {
+                    System.out.print(n[r][c][j][cs]);
+                }
+            }
+            System.out.println();
+        }
+
+    }
+
+    static void checkcol(int n[][][][]) {
+        for (int c = 0; c < 3; c++) {
+            for (int cs = 0; cs < 3; cs++) {
+                String st = "";
+                for (int r = 0; r < 3; r++) {
+                    for (int j = 0; j < 3; j++) {
+                        st += n[r][c][j][cs];
+                    }
+                }
+                System.out.println(st + " = " + checksudoku(st));
+            }
+        }
+    }
+}
+
