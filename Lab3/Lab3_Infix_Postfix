@@ -1,0 +1,141 @@
+package com.mycompany.infixpostfix;
+
+import java.util.*;
+public class InfixPostfix {
+    String Infix = "(A+B)+(C/D)";
+    char[] Postfix;
+    char[] stack = new char[50];
+    int Priority_input = 0, Priority_stack = -1, j = 0, top = -1;
+    
+    Map<Character, Float> values = new HashMap<>();
+
+    public static void main(String[] args) {
+        InfixPostfix obj = new InfixPostfix();
+        obj.GetPostfix();
+        obj.inputValues();
+        obj.evaluatePostfix();
+    }
+    
+    void inputValues(){
+        Scanner sc = new Scanner(System.in);
+        Set<Character> vars = new HashSet<>();
+        for(char c : Infix.toCharArray()){
+            if(Character.isLetter(c)) vars.add(c);
+        }
+        for(char v : vars){
+            System.out.print("Input Values " + v + ":");
+            values.put(v, sc.nextFloat());
+        }
+    }
+
+    void GetPostfix() {
+        Postfix = new char[Infix.length()];
+        System.out.println("[Infix]: " + Infix);
+        System.out.println("+-----+-----+---------------------+");
+        System.out.println("|Input|Stack|Postfix              |");
+        System.out.println("+-----+-----+---------------------+");
+
+        for (int i = 0; i < Infix.length(); i++) {
+            char ch = Infix.charAt(i);
+            System.out.print("|  " + ch + "  |");
+            switch (ch) {
+                case '*': case '/': case '%':
+                    Priority_input = 2; PopAndPush(ch); break;
+                case '+': case '-':
+                    Priority_input = 1; PopAndPush(ch); break;
+                case '^': case '(':
+                    Priority_input = 4; PopAndPush(ch); break;
+                case ')':
+                    Parenthesis(); break;
+                default:
+                    Postfix[j++] = ch;
+            }
+            showStack();
+            showPostfix();
+        }
+
+        while (top >= 0) Pop(); 
+        System.out.println("|-----------+---------------------+");
+        System.out.print("|           |"); showPostfix();
+        System.out.println("+-----+-----+---------------------+");
+    }
+    
+    void evaluatePostfix(){
+        Stack<Float> st = new Stack<>();
+        for(int i=0; i<j; i++){
+            char c = Postfix[i];
+            if(Character.isLetter(c)){
+                st.push(values.get(c));
+            }else{
+                Float b = st.pop();
+                Float a = st.pop();
+                switch(c){
+                    case '+': st.push(a+b); break;
+                    case '-': st.push(a-b); break;
+                    case '*': st.push(a*b); break;
+                    case '/': st.push(a/b); break;
+                    case '%': st.push(a%b); break;
+                    case '^': st.push((float)Math.pow(a, b)); break;
+                }
+            }
+        }
+        System.out.println("\n[Postfix]: " + new String(Postfix, 0, j));
+        System.out.println("Result = " + st.pop());
+    }
+
+    void PopAndPush(char ch) {
+        while (Priority_input <= Priority_stack) {
+            Pop();
+            if (top != -1) set_PriorityTopStack();
+            else { Priority_stack = 4; break; }
+        }
+        Push(ch);
+    }
+
+    void Pop() {
+        if (top != -1) {
+            Postfix[j++] = stack[top--];
+        } else {
+            Priority_stack = 4;
+        }
+    }
+
+    void Push(char ch) {
+        stack[++top] = ch;
+        set_PriorityTopStack();
+    }
+
+    void set_PriorityTopStack() {
+        if (top != -1) {
+            char ch = stack[top];
+            switch (ch) {
+                case '^': Priority_stack = 3; break;
+                case '*': case '%': case '/': Priority_stack = 2; break;
+                case '+': case '-': Priority_stack = 1; break;
+                case '(': Priority_stack = 0; break;
+            }
+        } else Priority_stack = 4;
+    }
+
+    void Parenthesis() {
+        while (stack[top] != '(') Pop();
+        top--;
+        set_PriorityTopStack();
+    }
+
+    void showStack() {
+        for (int i = 0; i < 5; i++) {
+            if (i <= top) System.out.print(stack[i]);
+            else System.out.print(" ");
+        }
+        System.out.print("|");
+    }
+
+    void showPostfix() {
+        for (int i = 0; i < 21; i++) {
+            if (i < j) System.out.print(Postfix[i]);
+            else System.out.print(" ");
+        }
+        System.out.println("|");
+    }
+}
