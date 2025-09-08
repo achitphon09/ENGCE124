@@ -2,7 +2,7 @@ package com.mycompany.infixpostfix;
 
 import java.util.*;
 public class InfixPostfix {
-    String Infix = "(A+B)+(C/D)";
+    String Infix = "(A+B)+(C/D)^E-(F+G)";
     char[] Postfix;
     char[] stack = new char[50];
     int Priority_input = 0, Priority_stack = -1, j = 0, top = -1;
@@ -40,13 +40,17 @@ public class InfixPostfix {
             System.out.print("|  " + ch + "  |");
             switch (ch) {
                 case '*': case '/': case '%':
-                    Priority_input = 2; PopAndPush(ch); break;
+                    Priority_input = 2; PopAndPush(ch); 
+                    break;
                 case '+': case '-':
-                    Priority_input = 1; PopAndPush(ch); break;
+                    Priority_input = 1; PopAndPush(ch); 
+                    break;
                 case '^': case '(':
-                    Priority_input = 4; PopAndPush(ch); break;
+                    Priority_input = 4; PopAndPush(ch); 
+                    break;
                 case ')':
-                    Parenthesis(); break;
+                    Parenthesis(); 
+                    break;
                 default:
                     Postfix[j++] = ch;
             }
@@ -70,12 +74,18 @@ public class InfixPostfix {
                 Float b = st.pop();
                 Float a = st.pop();
                 switch(c){
-                    case '+': st.push(a+b); break;
-                    case '-': st.push(a-b); break;
-                    case '*': st.push(a*b); break;
-                    case '/': st.push(a/b); break;
-                    case '%': st.push(a%b); break;
-                    case '^': st.push((float)Math.pow(a, b)); break;
+                    case '+': st.push(a+b); 
+                    break;
+                    case '-': st.push(a-b); 
+                    break;
+                    case '*': st.push(a*b); 
+                    break;
+                    case '/': st.push(a/b); 
+                    break;
+                    case '%': st.push(a%b); 
+                    break;
+                    case '^': st.push((float)Math.pow(a, b)); 
+                    break;
                 }
             }
         }
@@ -109,10 +119,14 @@ public class InfixPostfix {
         if (top != -1) {
             char ch = stack[top];
             switch (ch) {
-                case '^': Priority_stack = 3; break;
-                case '*': case '%': case '/': Priority_stack = 2; break;
-                case '+': case '-': Priority_stack = 1; break;
-                case '(': Priority_stack = 0; break;
+                case '^': Priority_stack = 3;
+                break;
+                case '*': case '%': case '/': Priority_stack = 2; 
+                break;
+                case '+': case '-': Priority_stack = 1; 
+                break;
+                case '(': Priority_stack = 0; 
+                break;
             }
         } else Priority_stack = 4;
     }
