@@ -1,0 +1,22 @@
+package com.mycompany.spotify;
+public class Spotify {
+    public static void main(String[] args) {
+        DList playlist = new DList();
+        playlist.append("A");
+        playlist.append("B");
+        
+        playlist.addNext("D", "B");
+        playlist.append("E");
+        playlist.append("F");
+        playlist.addPrev("F","A");
+
+        DNode found = playlist.search("s");
+        if (found != null) {
+            System.out.println("Found: " + found.info);
+        } else {
+            System.out.println("Not Found");
+        }
+
+        playlist.showAll();
+    }
+}
