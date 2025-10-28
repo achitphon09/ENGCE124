@@ -1,0 +1,12 @@
+package com.mycompany.spotify;
+
+public class DNode {
+    DNode Llink, Rlink;
+    String info;
+    DNode(){
+        this("");
+    }
+    DNode(String data){
+        info = data;
+    }
+}
