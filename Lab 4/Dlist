@@ -1,0 +1,107 @@
+package com.mycompany.spotify;
+
+public class DList {
+    DNode head, tail, travel,position;
+    int count;
+    
+    void addFirst(String data){ //insert data at the front
+        DNode newnode = new DNode(data);
+        if(count==0){
+            append(data);
+        }else{
+            newnode.Rlink = head;
+            head.Llink = newnode;
+            head = newnode;
+        }
+        count++;
+    }
+    
+    void append(String data) { //add data at the end
+        DNode newnode = new DNode(data);
+        if (count == 0) {
+            head = newnode;
+            tail = newnode;
+        } else {
+            tail.Rlink = newnode;
+            newnode.Llink = tail;
+            tail = newnode;
+        }
+        count++;
+    }
+    
+    void addNext(String data,String target){ //add a new node after the target node
+        position = search(target);
+        if(position != null){
+            if(position == tail){
+                append(data);
+            }else{
+                DNode newnode = new DNode(data);
+                newnode.Rlink = position.Rlink;
+                newnode.Llink = position;
+                position.Rlink.Llink = newnode;
+                position.Rlink = newnode;
+                count++;
+            }      
+        }
+    }
+    
+    void addPrev(String data,String target){//add new node before the target node
+        position = search(target);
+        if(position != null){
+            if(position == head){
+                addFirst(data);
+            }else{
+                DNode newnode = new DNode(data);
+                newnode.Rlink = position;
+                newnode.Llink = position.Llink;
+                position.Llink.Rlink = newnode;
+                position.Llink = newnode;
+                count++;
+            }      
+        }
+    }  
+    
+    DNode search(String target) {
+        travel = head;
+        while (travel != null && !travel.info.equals(target)) {
+            travel = travel.Rlink;
+        }
+        return travel;
+    }
+    
+    void showAll() {
+        travel = head;
+        while (travel != null) {
+            System.out.println(travel.info); //INFO(travel)
+            travel = travel.Rlink;  //travel = LINK(travel)
+        }
+        System.out.println("----------------");
+    }
+    
+    void Remove(String target){
+        position = search(target);
+        if(position != null){
+            if(position == head){//remove first Node (head)
+                head = head.Rlink;
+                if(head != null){
+                    head.Llink = null;
+                }else{
+                    tail = null;
+                }
+                }else if (position == tail){//remove last Node (tail)
+                    tail = tail.Llink;
+                    if(tail != null){
+                        tail.Rlink = null;
+                    }else{
+                        head = null;
+                    }
+            }else{//remove center Node
+                    position.Llink.Rlink = position.Rlink;
+                    position.Rlink.Llink = position.Llink;
+                }
+            count--;
+        }else{
+            System.out.println("Not Found" + target);
+        }
+    }
+}
